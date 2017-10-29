@@ -8,18 +8,32 @@ import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { ApolloModule, Apollo } from 'apollo-angular';
 import { HttpClientModule } from '@angular/common/http';
 
+import { RouterModule, Routes } from '@angular/router';
+import { IonicApp, IonicModule } from 'ionic-angular';
+import { HelloComponent } from './hello/hello.component';
+import {ApolloComponent} from './apollo/apollo.component';
+
+const routes: Routes = [
+  {path: '', component: HelloComponent, pathMatch: 'full'},
+  {path: 'apollo', component: ApolloComponent}
+];
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HelloComponent,
+    ApolloComponent
   ],
   imports: [
     BrowserModule,
     ApolloModule,
     HttpLinkModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicModule.forRoot(AppComponent, {locationStrategy: 'path'}),
+    RouterModule.forRoot(routes)
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [IonicApp]
 })
 export class AppModule {
   constructor(

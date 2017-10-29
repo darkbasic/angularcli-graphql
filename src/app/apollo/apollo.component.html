@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Apollo AngularCLI Ionic</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <button ion-item *ngFor="let item of (items$ | async)?.data?.allMembers">
+      {{item.name}}
+    </button>
+  </ion-list>
+</ion-content>
