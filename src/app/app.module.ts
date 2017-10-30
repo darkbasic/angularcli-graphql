@@ -11,7 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { HelloComponent } from './hello/hello.component';
-import {ApolloComponent} from './apollo/apollo.component';
+import { ApolloComponent } from './apollo/apollo.component';
+import { WebSocketLink } from 'apollo-link-ws';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 
 const routes: Routes = [
   {path: '', component: HelloComponent, pathMatch: 'full'},
@@ -40,8 +42,14 @@ export class AppModule {
     apollo: Apollo,
     httpLink: HttpLink
   ) {
+    const GRAPHQL_ENDPOINT = 'ws://localhost:3000/graphql_live';
+    const client = new SubscriptionClient(GRAPHQL_ENDPOINT, {
+      reconnect: true,
+    });
+
     apollo.create({
-      link: httpLink.create({uri: 'http://localhost:3000/graphql'}),
+      // link: httpLink.create({uri: 'http://localhost:3000/graphql_live'}),
+      link: new WebSocketLink(client),
       cache: new InMemoryCache()
     });
   }
