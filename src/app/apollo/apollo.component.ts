@@ -1,16 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 
-import { Apollo } from 'apollo-angular';
-import gql from 'graphql-tag';
-
-// We use the gql tag to parse our query string into a query document
-const CurrentUserForProfile = gql`
-  query allMembers {
-    allMembers @live {
-       name
-     }
-   }
-`;
+import {Apollo} from 'apollo-angular';
+import {Observable} from 'rxjs/Observable';
+import {AllMembers} from '../../types';
+import {ApolloQueryResult} from 'apollo-client';
+import {CurrentUserForProfile} from '../../graphql/allMembers.query';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-apollo',
@@ -18,15 +13,15 @@ const CurrentUserForProfile = gql`
   styleUrls: ['./apollo.component.html']
 })
 export class ApolloComponent implements OnInit {
-  items$: any;
+  items$: Observable<AllMembers.AllMembers[]>;
 
   constructor(private apollo: Apollo) {}
 
   ngOnInit() {
-    const query = this.apollo.watchQuery<any>({
+    const query = this.apollo.watchQuery<AllMembers.Query>({
       query: CurrentUserForProfile
     });
 
-    this.items$ = query.valueChanges;
+    this.items$ = query.valueChanges.map((result: ApolloQueryResult<AllMembers.Query>) => result.data.allMembers);
   }
 }

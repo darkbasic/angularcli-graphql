@@ -6,7 +6,7 @@
 
 <ion-content>
   <ion-list>
-    <button ion-item *ngFor="let item of (items$ | async)?.data?.allMembers">
+    <button ion-item *ngFor="let item of items$ | async">
       {{item.name}}
     </button>
   </ion-list>
